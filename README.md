@@ -1,79 +1,85 @@
 # Pytorch-SSD for Marine Objects 4.4
-The objective of this project is to identify marine objects (Boat and Buoy) using the newest pytorch-ssd from @dustu-nv that exploits the capabilities of JP4.4. This marine SSD repository was originally inspired by Dusty Franklin’s (@dusty-nv) pytorch-ssd GitHub repository found at the following link:
+The objective of this project is to identify marine objects (Boat, Buoy) using the newest pytorch-ssd from @dustu-nv that exploits the capabilities of JP4.4. This marine ssd repository was originally inspired by Dusty Franklin’s (@dusty-nv) pytorch-ssd GitHub repository found at the following link:
 
 https://github.com/dusty-nv/pytorch-ssd
 
-Mr. Franklin now includes this pytorch-ssd in his latest jetson-inference repository found at the following link:
+Mr. Franklin has now includes this pytorch-ssd in his latest jetson-inference repository found at the following link:
 
 https://github.com/dusty-nv/jetson-inference/blob/master/docs/pytorch-ssd.md
 
-This is a Single Shot MultiBox Detector using MobilNet. We basically followed his newest example as was documented except that we used our marine dataset and not fruit.  
+This is a Single Shot MultiBox Detector using MobilNet. We basically followed his newest example as was documented except that we used our marine dataset and not fruit. This method has matured and is now easy to use and deploy as a very good object detection technique, especially taking advantage of the Jetson GPU capabilities. 
 
-We updated our jetson-inference with Dusty's latest code and installed all of the requirements. 
+Before starting we completely updated our jetson-inference with Dusty's latest code from his repository and installed all of the requirements. 
 
 # Download additional images with labels:
-We took advantage of the additional data that can now be obtained using his open_image_downloader.py program that can be run as shown below:
+We took advantage of accessing additional images with labels in the open_image format that can now be obtained using Dusty's open_image_downloader.py program:
 
 	python3 open_images_downloader.py --class-names "Boat"
 
-However, we chose to download only 2500 images: 
+However, we chose to download only 2500 images using the following command: 
 
 	python3 open_images_downloader.py --max-images=2500 --class-names "Boat"
 
-We are running our ssd programs out of the /jetson-inference/python/training/detection/ssd/ directory, but with the recommended install they can be run from any directory. 
+We are running our ssd programs out of the /jetson-inference/python/training/detection/ssd/ directory, but with the recommended install this ssd technique can be run from any directory. 
 
 
-The download was very simple creating a /data/train/
-					/data/test/
-					/data/validation/
+The download was very simple creating the /data/train/
+					  /data/test/
+					  /data/validation/
 
-subdirectory with assigned images and the 
+subdirectory with images and the annotations: 
 
     sub-train-annotations-bbox.csv
     sub-test-annotations-bbox.csv
     sub-validation-annotations-bbox.csv
     class-description-bbox.csv
 
-comma delimited .csv files shown above. 
+which are comma delimited .csv files as shown above with labels and boxes for these labels. 
 
-There are also the following .csv files with all annotations for each image:
+We also downloaded the following .csv files with every annotations for each image too:
 
     train-annotations-bbox.csv
     test-annotations-bbox.csv
     validation-annotations-bbox.csv
 
-We have not used the above full annotation .csv files at this point. 
+We have not used the above full annotation .csv files at this point and are only working from the sub... files. 
 
 # Supplement Downloaded data with our Existing Marine Images and Labels:
-Our downloaded data only had Boat and we also needed a Buoy classification. We added our marine dataset and added these data to the new downloaded data images and .csv files.
+The downloaded data only had Boat classification, and we also needed Buoy labeled images too. We added our marine dataset from JP4.3 in this GitHub Philliec459 suite of repositories. We added these existing marine data to the newly downloaded images and .csv annotation files.
 
 # Training
-To train our marine dataset we used the command:
+To train our marine dataset we used the following command:
 
 	python3 train_ssd.py --model-dir=models/marine --batch-size=4 --num-epochs=60
 
-In the training populates our /models/marine/ subdirectory with a label.txt to define our classifications and mb1-ssd-Epoch-x-Loss-xxxxxxx.pth files for each Epoch in the models/marine subdirectory.  
+Training first populates our /models/marine/ subdirectory with a label.txt file to define our classifications and mb1-ssd-Epoch-x-Loss-xxxxxxx.pth files for each Epoch in the models/marine subdirectory. 
 
-Once the training is complete, we then ran the following command to create the ssd-mobilnet.onnx file using the following command line:
+We also found the --resume command to be useful in running additional Epochs from where you last left off. 
+
+	python3 train_ssd.py --model-dir=models/marine --batch-size=4 --num-epochs=60 --resume=/home/craig/src/jetson-inference/python/training/detection/ssd2/models/marine/mb1-ssd-Epoch-9-Loss-3.176339123307205.pth
+
+Once the training is complete, we then ran the following command to create the ssd-mobilnet.onnx file by using the following command:
 
 	python3 onnx_export.py --model-dir=models/marine
 
-where the onnx file was made from the .pth file with the lowest Epoch Loss. The onnx file can be used to make our marine object detection estimates. We created an image subdirectory and loaded a series of Boat and Buoy images to see how well the program performed. 
+The onnx file was made from the existing .pth file taken from the lowest Epoch Loss. The onnx file is then used to make the final marine object detection estimates. 
+
+To evaluate our results we created an image subdirectory and loaded a series of Boat and Buoy images to observe how well the program performed. 
 
 First, 
 
 	mkdir test_marine
 
-then we run detectnet on the .jpg images from the image subdirectory:
+then we ran detectnet on the .jpg images from the image subdirectory:
 
 	detectnet --model=models/marine/ssd-mobilenet.onnx --labels=models/marine/labels.txt \
           --input-blob=input_0 --output-cvg=scores --output-bbox=boxes \
             "images/*.jpg" test_marine
 
-# Review new Downloaded data to Create High Quality Marine Dataset:
-Detectnet did a fair job of boxing in the Boats and Buoys, but we were not completely satisfied. We reviewed each of the data images in the train, test and validation subdirectories and removed new downloaded images that were not representative from our training perspective or object details. Obviously, an image of a fleet boats taken from a plane is not the perspective that we are looking for or even images of the boat taken from the interior of the boat or people images with a boat somewhere in the background. We culled the images to create high quality set of new training/testing images that produced a new set of data with a Loss of 1.85 using just 60 Epochs.
+# Revise new Downloaded data to create High Quality Marine Dataset for training:
+Detectnet did a fair job of boxing in the Boats and Buoys from the initial download data supplemented with our marine data. However, we were not completely satisfied. We reviewed each of the newly downloaded data images in the train, test and validation subdirectories and removed images that were not representative from our training perspective or object details. Obviously, an image of a fleet boats taken from a plane is not the perspective that we are looking for for our at-sea object detection project from our boat. We also eliminated images of the boat taken from the interior of the boat or images with people and a boat somewhere in the background. We culled the images to create this high quality dataset of training/testing images that produced a new set of a Loss of 1.85 using just 60 Epochs.
 
-We removed the images from the test/train/validation subdirectories, but we did not remove those images from our .csv files. The ssd training did point out that the images were missing and the data from these images were not used in the processing. 
+We did removed the images from the test/train/validation subdirectories, but we did not remove those images from our .csv files. During the ssd training, the program did point out that the images were missing and the data from these images were not used in the processing, but it did not appear to hamper our training. 
 
 # Example Results:
 
@@ -88,8 +94,7 @@ We removed the images from the test/train/validation subdirectories, but we did 
 ![Marine_Image](27.jpg)
 
 
-The following command will be used to create our video object detection while at sea. 
-
+The following command will eventually be used to create our video real-time object detection while at sea with alarms. 
 
 	detectnet --model=models/fruit/ssd-mobilenet.onnx --labels=models/fruit/labels.txt \
           	--input-blob=input_0 --output-cvg=scores --output-bbox=boxes \
