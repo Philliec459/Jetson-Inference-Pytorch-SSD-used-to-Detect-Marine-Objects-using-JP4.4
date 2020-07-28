@@ -93,7 +93,7 @@ The following type of command will be used to create our video object detection 
 
 	python3 open_images_downloader.py --max-images=2500 --class-names "Boat"
 
-	#added all of my Bouy data to train, test and validation sets
+	#added all of our marine Boat and Bouy data to train, test and validation sets including .csv file additions too.
 
 
 # Train:
@@ -101,8 +101,10 @@ The following type of command will be used to create our video object detection 
 
 	python3 train_ssd.py --model-dir=models/marine --batch-size=4 --num-epochs=60
 
+# Create ONNX file:
 	python3 onnx_export.py --model-dir=models/marine
 
+# Review Object Detection:
 	detectnet --model=models/marine/ssd-mobilenet.onnx --labels=models/marine/labels.txt \
           	--input-blob=input_0 --output-cvg=scores --output-bbox=boxes \
 		    "images/boat*.jpg" test_marine
