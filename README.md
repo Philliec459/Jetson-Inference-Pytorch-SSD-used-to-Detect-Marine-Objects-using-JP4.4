@@ -75,6 +75,19 @@ Detectnet did a fair job of boxing in the Boats and Buoys, but we were not compl
 
 We removed the images from the test/train/validation subdirectories, but we did not remove those images from our .csv files. The ssd training did point out that the images were missing and the data from these images were not used in the processing. 
 
+# Example Results:
+
+![Marine_Image](0.jpg)
+
+![Marine_Image](9.jpg)
+
+![Marine_Image](11.jpg)
+
+![Marine_Image](22.jpg)
+
+![Marine_Image](29.jpg)
+
+
 The following type of command will be used to create our video object detection while at sea. 
 
 
