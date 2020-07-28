@@ -3,7 +3,7 @@ The objective of this project is to identify marine objects (Boat and Buoy) usin
 
 https://github.com/dusty-nv/pytorch-ssd
 
-Mr. Franklin now includes this pytorch-ssd in his latest jetsion-inference repository found at the following link:
+Mr. Franklin now includes this pytorch-ssd in his latest jetson-inference repository found at the following link:
 
 https://github.com/dusty-nv/jetson-inference/blob/master/docs/pytorch-ssd.md
 
