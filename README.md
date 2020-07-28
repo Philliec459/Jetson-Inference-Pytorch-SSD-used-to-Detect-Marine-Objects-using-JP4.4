@@ -58,6 +58,8 @@ We also found the --resume command to be useful in running additional Epochs fro
 
 	python3 train_ssd.py --model-dir=models/marine --batch-size=4 --num-epochs=60 --resume=/home/craig/src/jetson-inference/python/training/detection/ssd2/models/marine/mb1-ssd-Epoch-9-Loss-3.176339123307205.pth
 
+The --resume command is supposed to start off from the .pth file that you choose, but the Loss after the second training session using an additional 60 Epochs barely got back to what we had before. 
+
 Once the training is complete, we then ran the following command to create the ssd-mobilnet.onnx file by using the following command:
 
 	python3 onnx_export.py --model-dir=models/marine
@@ -76,7 +78,7 @@ then we ran detectnet on the .jpg images from the image subdirectory:
           --input-blob=input_0 --output-cvg=scores --output-bbox=boxes \
             "images/*.jpg" test_marine
 
-# Revise new Downloaded data to create High Quality Marine Dataset for training:
+# Revise new downloaded data to create high-quality marine dataset for training:
 Detectnet did a fair job of boxing in the Boats and Buoys from the initial download data supplemented with our marine data. However, we were not completely satisfied. We reviewed each of the newly downloaded data images in the train, test and validation subdirectories and removed images that were not representative from our training perspective or object details. Obviously, an image of a fleet boats taken from a plane is not the perspective that we are looking for for our at-sea object detection project from our boat. We also eliminated images of the boat taken from the interior of the boat or images with people and a boat somewhere in the background. We culled the images to create this high quality dataset of training/testing images that produced a new set of a Loss of 1.85 using just 60 Epochs.
 
 We did removed the images from the test/train/validation subdirectories, but we did not remove those images from our .csv files. During the ssd training, the program did point out that the images were missing and the data from these images were not used in the processing, but it did not appear to hamper our training. 
