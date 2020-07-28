@@ -84,16 +84,11 @@ The following type of command will be used to create our video object detection 
 
 
 # Command lines used in this pytorch-ssd processing using JP4.4:
-cd jetson-inference/python/training/detection/ssd
-wget https://nvidia.box.com/shared/static/djf5w54rjvpqocsiztzaandq1m3avr7c.pth -O models/mobilenet-v1-ssd-mp-0_675.pth
-pip3 install -v -r requirements.txt
+	cd jetson-inference/python/training/detection/ssd
+	wget https://nvidia.box.com/shared/static/djf5w54rjvpqocsiztzaandq1m3avr7c.pth -O models/mobilenet-v1-ssd-mp-0_675.pth
+	pip3 install -v -r requirements.txt
 
 
-#----------------------------------------------------------------------------------
-#
-#####                     Marine
-#
-#----------------------------------------------------------------------------------
 #python3 open_images_downloader.py --class-names "Boat"  - too many boats with labels too, good but huge
 
 	python3 open_images_downloader.py --max-images=2500 --class-names "Boat"
@@ -130,14 +125,13 @@ Defaults Of Training: Balance_Data=False, Base_Net=None, Base_Net_Lr=0.001, Batc
 
 	detectnet /dev/video1
 
-detectnet --model=/home/craig/src/jetson-inference/python/training/detection/ssd2/models/marine/ssd-mobilenet.onnx \
-          --labels=/home/craig/src/jetson-inference/python/training/detection/ssd2/models/marine/labels.txt \
-          --input-blob=input_0 --output-cvg=scores --output-bbox=boxes \
-            "/home/craig/src/jetson-inference/python/training/detection/ssd2/data/train/*.jpg" test_train
+	detectnet --model=/home/craig/src/jetson-inference/python/training/detection/ssd2/models/marine/ssd-mobilenet.onnx \
+          	--labels=/home/craig/src/jetson-inference/python/training/detection/ssd2/models/marine/labels.txt \
+          	--input-blob=input_0 --output-cvg=scores --output-bbox=boxes \
+            	"/home/craig/src/jetson-inference/python/training/detection/ssd2/data/train/*.jpg" test_train
 
-detectnet --model=models/marine/ssd-mobilenet.onnx --labels=models/marine/labels.txt \
-          --input-blob=input_0 --output-cvg=scores --output-bbox=boxes \
-            "data/train/*.jpg" test_train
+	detectnet --model=models/marine/ssd-mobilenet.onnx --labels=models/marine/labels.txt \
+          	--input-blob=input_0 --output-cvg=scores --output-bbox=boxes \
+            	"data/train/*.jpg" test_train
 
 
-We will be using our camera
