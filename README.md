@@ -45,7 +45,7 @@ We also downloaded the following .csv files with every annotations for each imag
 We have not used the above full annotation .csv files at this point and are only working from the sub... files. 
 
 # Supplement Downloaded data with our Existing Marine Images and Labels:
-The downloaded data only had Boat classification, and we also needed Buoy labeled images too. We added our marine dataset from JP4.3 in this GitHub Philliec459 suite of repositories. We added these existing marine data to the newly downloaded images and .csv annotation files.
+The downloaded data only had Boat classification, and we also needed Buoy labeled images too. We added our own marine dataset from JP4.3 in this GitHub Philliec459 suite of repositories. We added these existing marine data to the newly downloaded images and .csv annotation files.
 
 # Training
 To train our marine dataset we used the following command:
@@ -60,7 +60,7 @@ We also found the --resume command to be useful in running additional Epochs fro
 
 The --resume command is supposed to start off from the .pth file that you choose, but the Loss after the second training session using an additional 60 Epochs barely got back to what we had before. 
 
-Once the training is complete, we then ran the following command to create the ssd-mobilnet.onnx file by using the following command:
+Once the training was complete, we then ran the following command to create the ssd-mobilnet.onnx file by using the following command:
 
 	python3 onnx_export.py --model-dir=models/marine
 
@@ -79,9 +79,9 @@ then we ran detectnet on the .jpg images from the image subdirectory:
             "images/*.jpg" test_marine
 
 # Revise new downloaded data to create high-quality marine dataset for training:
-Detectnet did a fair job of boxing in the Boats and Buoys from the initial download data supplemented with our marine data. However, we were not completely satisfied. We reviewed each of the newly downloaded data images in the train, test and validation subdirectories and removed images that were not representative from our training perspective or object details. Obviously, an image of a fleet boats taken from a plane is not the perspective that we are looking for for our at-sea object detection project from our boat. We also eliminated images of the boat taken from the interior of the boat or images with people and a boat somewhere in the background. We culled the images to create this high quality dataset of training/testing images that produced a new set of a Loss of 1.85 using just 60 Epochs.
+Detectnet did a fair job of boxing in the Boats and Buoys from the initial download data supplemented with our marine data. However, we were not completely satisfied. We reviewed each of the newly downloaded data images in the train, test and validation subdirectories and removed images that were not representative from our training perspective or object details. Obviously, an image of a fleet boats taken from a plane is not the perspective that we are looking for from our at-sea object detection project taken from a boat. We also eliminated images of a boat taken from the interior of a boat or images with people and a boat somewhere in the background. We culled these images to create a better quality dataset of training/testing images that produced a new set images that trained at a Loss of 1.85 using just 60 Epochs.
 
-We did removed the images from the test/train/validation subdirectories, but we did not remove those images from our .csv files. During the ssd training, the program did point out that the images were missing and the data from these images were not used in the processing, but it did not appear to hamper our training. 
+We removed  images from the test/train/validation subdirectories that did not appear to be suitable. However, we did not remove those image labels from our .csv files. During the ssd training, the program did indicate which images were missing, and it is assumed that the data from these images were not used in the processing. In any event this did not appear to hamper our training. 
 
 # Example Results:
 
@@ -96,14 +96,14 @@ We did removed the images from the test/train/validation subdirectories, but we 
 ![Marine_Image](27.jpg)
 
 
-The following command will eventually be used to create our video real-time object detection while at sea with alarms. 
+The following command will eventually be used to create our real-time video object detection while at sea with alarms. 
 
 	detectnet --model=models/fruit/ssd-mobilenet.onnx --labels=models/fruit/labels.txt \
           	--input-blob=input_0 --output-cvg=scores --output-bbox=boxes \
             	/dev/video1
 
 
-# Command lines used in this pytorch-ssd processing using JP4.4:
+# Command lines used in this jetson-inference, pytorch-ssd processing using JP4.4:
 	cd jetson-inference/python/training/detection/ssd
 	wget https://nvidia.box.com/shared/static/djf5w54rjvpqocsiztzaandq1m3avr7c.pth -O models/mobilenet-v1-ssd-mp-0_675.pth
 	pip3 install -v -r requirements.txt
