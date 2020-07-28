@@ -64,7 +64,7 @@ First,
 
 	mkdir test_marine
 
-We then run detectnet on the .jpg images from the image subdirectory:
+then we run detectnet on the .jpg images from the image subdirectory:
 
 	detectnet --model=models/marine/ssd-mobilenet.onnx --labels=models/marine/labels.txt \
           --input-blob=input_0 --output-cvg=scores --output-bbox=boxes \
@@ -89,21 +89,19 @@ The following type of command will be used to create our video object detection 
 	pip3 install -v -r requirements.txt
 
 
-#python3 open_images_downloader.py --class-names "Boat"  - too many boats with labels too, good but huge
+	#python3 open_images_downloader.py --class-names "Boat"  - too many boats with labels too, good but huge
 
 	python3 open_images_downloader.py --max-images=2500 --class-names "Boat"
 
-#added all of my Bouy data to train, test and validation sets
+	#added all of my Bouy data to train, test and validation sets
 
 
 # Train:
-Defaults Of Training: Balance_Data=False, Base_Net=None, Base_Net_Lr=0.001, Batch_Size=4, Checkpoint_Folder='Models/Marine', Dataset_Type='Open_Images', Datasets=['Data'], Debug_Steps=10, Extra_Layers_Lr=None, Freeze_Base_Net=False, Freeze_Net=False, Gamma=0.1, Lr=0.01, Mb2_Width_Mult=1.0, Milestones='80,100', Momentum=0.9, Net='Mb1-Ssd', Num_Epochs=10, Num_Workers=2, Pretrained_Ssd='Models/Mobilenet-V1-Ssd-Mp-0_675.Pth', Resume=None, Scheduler='Cosine', T_Max=100, Use_Cuda=True, Validation_Epochs=1, Weight_Decay=0.0005
+	Defaults Of Training: Balance_Data=False, Base_Net=None, Base_Net_Lr=0.001, Batch_Size=4, Checkpoint_Folder='Models/Marine', Dataset_Type='Open_Images', 	Datasets=['Data'], Debug_Steps=10, Extra_Layers_Lr=None, Freeze_Base_Net=False, Freeze_Net=False, Gamma=0.1, Lr=0.01, Mb2_Width_Mult=1.0, 		Milestones='80,100', Momentum=0.9, Net='Mb1-Ssd', Num_Epochs=10, Num_Workers=2, Pretrained_Ssd='Models/Mobilenet-V1-Ssd-Mp-0_675.Pth', Resume=None, 	Scheduler='Cosine', T_Max=100, Use_Cuda=True, Validation_Epochs=1, Weight_Decay=0.0005
 
 	python3 train_ssd.py --model-dir=models/marine --batch-size=4 --num-epochs=60
 
-
 	python3 onnx_export.py --model-dir=models/marine
-
 
 	detectnet --model=models/marine/ssd-mobilenet.onnx --labels=models/marine/labels.txt \
           	--input-blob=input_0 --output-cvg=scores --output-bbox=boxes \
@@ -112,8 +110,6 @@ Defaults Of Training: Balance_Data=False, Base_Net=None, Base_Net_Lr=0.001, Batc
 	detectnet --model=models/marine/ssd-mobilenet.onnx --labels=models/marine/labels.txt \
           	--input-blob=input_0 --output-cvg=scores --output-bbox=boxes \
             	/dev/video1
-
-
 
 	detectnet --model=models/marine/ssd-mobilenet.onnx --labels=models/marine/labels.txt \
           --input-blob=input_0 --output-cvg=scores --output-bbox=boxes \
@@ -125,13 +121,6 @@ Defaults Of Training: Balance_Data=False, Base_Net=None, Base_Net_Lr=0.001, Batc
 
 	detectnet /dev/video1
 
-	detectnet --model=/home/craig/src/jetson-inference/python/training/detection/ssd2/models/marine/ssd-mobilenet.onnx \
-          	--labels=/home/craig/src/jetson-inference/python/training/detection/ssd2/models/marine/labels.txt \
-          	--input-blob=input_0 --output-cvg=scores --output-bbox=boxes \
-            	"/home/craig/src/jetson-inference/python/training/detection/ssd2/data/train/*.jpg" test_train
 
-	detectnet --model=models/marine/ssd-mobilenet.onnx --labels=models/marine/labels.txt \
-          	--input-blob=input_0 --output-cvg=scores --output-bbox=boxes \
-            	"data/train/*.jpg" test_train
 
 
