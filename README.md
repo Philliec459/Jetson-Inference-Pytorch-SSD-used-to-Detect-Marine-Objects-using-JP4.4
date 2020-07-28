@@ -85,7 +85,7 @@ We removed the images from the test/train/validation subdirectories, but we did 
 
 ![Marine_Image](22.jpg)
 
-![Marine_Image](29.jpg)
+![Marine_Image](27.jpg)
 
 
 The following type of command will be used to create our video object detection while at sea. 
