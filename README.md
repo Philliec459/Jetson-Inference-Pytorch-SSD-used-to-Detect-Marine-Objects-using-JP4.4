@@ -9,6 +9,8 @@ https://github.com/dusty-nv/jetson-inference/blob/master/docs/pytorch-ssd.md
 
 This is a Single Shot MultiBox Detector method of object detection using MobilNet. For this repository we basically followed his latest tutorial as documented except that we used a marine theme and not fruit. This pytorch-ssd method has matured nicely.  It is now very easy to apply and appears to be a very good object detection technique taking advantage of the Jetson GPU capabilities. 
 
+![Marine_Image](boat_buoy_1slide.png)
+
 We first completely updated our jetson-inference project with Dusty's latest code and installed all of the requirements. 
 
 # Download additional images with labels:
