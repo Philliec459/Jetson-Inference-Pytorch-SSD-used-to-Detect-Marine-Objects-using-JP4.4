@@ -88,7 +88,7 @@ We removed the images from the test/train/validation subdirectories, but we did 
 ![Marine_Image](27.jpg)
 
 
-The following type of command will be used to create our video object detection while at sea. 
+The following command will be used to create our video object detection while at sea. 
 
 
 	detectnet --model=models/fruit/ssd-mobilenet.onnx --labels=models/fruit/labels.txt \
@@ -113,6 +113,9 @@ The following type of command will be used to create our video object detection 
 	Defaults Of Training: Balance_Data=False, Base_Net=None, Base_Net_Lr=0.001, Batch_Size=4, Checkpoint_Folder='Models/Marine', Dataset_Type='Open_Images', 	Datasets=['Data'], Debug_Steps=10, Extra_Layers_Lr=None, Freeze_Base_Net=False, Freeze_Net=False, Gamma=0.1, Lr=0.01, Mb2_Width_Mult=1.0, 		Milestones='80,100', Momentum=0.9, Net='Mb1-Ssd', Num_Epochs=10, Num_Workers=2, Pretrained_Ssd='Models/Mobilenet-V1-Ssd-Mp-0_675.Pth', Resume=None, 	Scheduler='Cosine', T_Max=100, Use_Cuda=True, Validation_Epochs=1, Weight_Decay=0.0005
 
 	python3 train_ssd.py --model-dir=models/marine --batch-size=4 --num-epochs=60
+
+	python3 train_ssd.py --model-dir=models/marine --batch-size=4 --num-epochs=60 --resume=/home/craig/src/jetson-	inference/python/training/detection/ssd/models/marine/mb1-ssd-Epoch-99-Loss-1.8643740839079808.pth
+
 
 ### Create ONNX file:
 	python3 onnx_export.py --model-dir=models/marine
