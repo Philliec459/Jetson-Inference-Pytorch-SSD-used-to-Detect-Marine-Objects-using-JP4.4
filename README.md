@@ -112,11 +112,12 @@ Once this technique is installed on the boat and fully deployed we will use some
 
 # Appendix:
 ## Command lines used in the jetson-inference pytorch-ssd processing using JP4.4:
+### Install:
 	cd jetson-inference/python/training/detection/ssd
 	wget https://nvidia.box.com/shared/static/djf5w54rjvpqocsiztzaandq1m3avr7c.pth -O models/mobilenet-v1-ssd-mp-0_675.pth
 	pip3 install -v -r requirements.txt
 
-
+### Download:
 	#python3 open_images_downloader.py --class-names "Boat"  - too many boats with labels too, good but huge
 
 	python3 open_images_downloader.py --max-images=2500 --class-names "Boat"
