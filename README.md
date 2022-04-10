@@ -7,7 +7,11 @@ Mr. Franklin has since enhanced this method and it is now includes in his latest
 
 https://github.com/dusty-nv/jetson-inference/blob/master/docs/pytorch-ssd.md
 
-This is a Single Shot MultiBox Detector method of object detection using MobilNet. For this repository we basically followed his latest tutorial as documented except that we used a marine theme and not fruit. This pytorch-ssd method has matured nicely.  It is now very easy to apply and appears to be a very good object detection technique taking advantage of the Jetson GPU capabilities. 
+This is a Single Shot MultiBox Detector method of object detection using MobilNet. For this repository we basically followed his latest tutorial as documented except that we used a marine theme and not fruit. 
+
+>![Geolog_Image](Sailboat_ID_using_AI_cropped.gif)
+
+This pytorch-ssd method has matured nicely.  It is now very easy to apply and appears to be a very good object detection technique taking advantage of the Jetson GPU capabilities. 
 
 >![Marine_Image](boat_buoy_1slide.png)
 
